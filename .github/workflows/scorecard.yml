@@ -8,8 +8,6 @@ on:
   schedule:
     # Run weekly on Saturdays
     - cron: "30 1 * * 6"
-  # Only the default branch is supported
-  branch_protection_rule:
   # Run the workflow manually
   workflow_dispatch:
 

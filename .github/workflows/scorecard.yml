@@ -13,49 +13,17 @@ on:
   # Run the workflow manually
   workflow_dispatch:
 
-# # Declare default permissions as read-only
-# permissions: read-all
-
-# jobs:
-#   run-scorecard:
-#     # Call reusable workflow file
-#     uses: cisco-ospo/.github/.github/workflows/_scorecard.yml@main
-#     permissions:
-#       id-token: write
-#       security-events: write
-#     secrets: inherit
-#     with:
-#       # Publish results of Scorecard analysis
-#       publish-results: true
-
-permissions:
-  id-token: none
-  security-events: none
+# Declare default permissions as read-only
+permissions: read-all
 
 jobs:
-  scorecard:
-    runs-on: ubuntu-latest
+  run-scorecard:
+    # Call reusable workflow file
+    uses: cisco-ospo/.github/.github/workflows/_scorecard.yml@main
     permissions:
-        id-token: write
-        security-events: write
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-        with:
-          persist-credentials: false
-      - name: ✅ run scorecard analysis
-        uses: ossf/scorecard-action@0864cf19026789058feabb7e87baa5f140aac736 # v2.3.1
-        with:
-          results_file: results.sarif
-          results_format: sarif
-          repo_token: ${{ secrets.SCORECARD_TOKEN }}
-          publish_results: true
-      - name: ⏫ upload sarif artifact
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
-        with:
-          name: SARIF file
-          path: results.sarif
-          retention-days: 5
-      - name: 📦 upload sarif results
-        uses: github/codeql-action/upload-sarif@47b3d888fe66b639e431abf22ebca059152f1eea # v3.24.5
-        with:
-          sarif_file: results.sarif
+      id-token: write
+      security-events: write
+    secrets: inherit
+    with:
+      # Publish results of Scorecard analysis
+      publish-results: true
